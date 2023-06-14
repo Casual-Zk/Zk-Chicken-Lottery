@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Zk Chickens - Lottery</title>
+    <meta property="og:title" content="Zk Chickens - Lottery" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta property="twitter:card" content="summary_large_image" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <!--This is the head section-->
+    <!-- <style> ... </style> -->
+    <style data-section-id="dropdown">
+      [data-thq="thq-dropdown"]:hover > [data-thq="thq-dropdown-list"] {
+          display: flex;
+        }
+
+        [data-thq="thq-dropdown"]:hover > div [data-thq="thq-dropdown-arrow"] {
+          transform: rotate(90deg);
+        }
+    </style>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div>
+      <link href="./home.css" rel="stylesheet" />
+
+      <div class="home-container">
+        <div class="home-title">
+          <h1 class="home-text">Zk Chickens Lottery</h1>
+        </div>
+        <div class="home-week-set-t10">
+          <div class="home-adjust-week">
+            <h1 class="home-text001">
+              <span>Week:&nbsp;</span>
+              <br />
+            </h1>
+            <input
+              type="number"
+              id="weekNumInput"
+              max="100"
+              min="1"
+              step="1"
+              placeholder="Week Number"
+              class="home-textinput input"
+            />
+            <button type="button" class="home-button button">
+              <span class="home-text004">
+                <span>Get Result</span>
+                <br />
+              </span>
+            </button>
+          </div>
+          <div class="home-seed-container">
+            <span class="home-text007 top10-text">Seed was: 25000</span>
+            <span class="home-text008 top10-text">
+              <span>
+                (Note: Seed is the Bitcoin's closing price at the end of the
+                week (sunday). Reference chart is Bitstamp's daily chart with
+                candles)
+              </span>
+              <br />
+            </span>
+          </div>
+          <div class="home-top10-container">
+            <h1 class="home-text011">Top 10</h1>
+            <div class="home-list-container">
+              <div class="home-title1">
+                <span class="home-text012 top10-text">
+                  <span>Address</span>
+                  <br />
+                </span>
+                <span class="home-text015 top10-text">
+                  <span>Eggs</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record">
+                <div class="home-address-container">
+                  <span class="home-text018 top10-text">1)</span>
+                  <span class="home-text019 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text020 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record01">
+                <div class="home-address-container01">
+                  <span class="home-text023 top10-text">2)</span>
+                  <span class="home-text024 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text025 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record02">
+                <div class="home-address-container02">
+                  <span class="home-text028 top10-text">3)</span>
+                  <span class="home-text029 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text030 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record03">
+                <div class="home-address-container03">
+                  <span class="home-text033 top10-text">4)</span>
+                  <span class="home-text034 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text035 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record04">
+                <div class="home-address-container04">
+                  <span class="home-text038 top10-text">5)</span>
+                  <span class="home-text039 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text040 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record05">
+                <div class="home-address-container05">
+                  <span class="home-text043 top10-text">6)</span>
+                  <span class="home-text044 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text045 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record06">
+                <div class="home-address-container06">
+                  <span class="home-text048 top10-text">7)</span>
+                  <span class="home-text049 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text050 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record07">
+                <div class="home-address-container07">
+                  <span class="home-text053 top10-text">8)</span>
+                  <span class="home-text054 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text055 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record08">
+                <div class="home-address-container08">
+                  <span class="home-text058 top10-text">9)</span>
+                  <span class="home-text059 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text060 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record09">
+                <div class="home-address-container09">
+                  <span class="home-text063 top10-text">10)</span>
+                  <span class="home-text064 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text065 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-pools">
+          <div class="home-profile-button-container">
+            <div class="home-active-profile-button">
+              <span class="home-active-profile-text">Pool 1</span>
+            </div>
+            <div class="home-passive-profile-button">
+              <span class="home-passive-profile-text">
+                <span>Pool 2</span>
+                <br />
+              </span>
+            </div>
+            <div class="home-passive-profile-button1">
+              <span class="home-passive-profile-text1">
+                <span>Pool 3</span>
+                <br />
+              </span>
+            </div>
+          </div>
+          <div class="home-pool-1">
+            <span class="home-text072">
+              10 winners will share X token in this pool this week.
+            </span>
+            <div class="home-list-container1">
+              <div class="home-title2">
+                <span class="home-text073 top10-text">
+                  <span>Address</span>
+                  <br />
+                </span>
+                <span class="home-text076 top10-text">
+                  <span>Eggs</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record10">
+                <div class="home-address-container10">
+                  <span class="home-text079 top10-text">1)</span>
+                  <span class="home-text080 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text081 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record11">
+                <div class="home-address-container11">
+                  <span class="home-text084 top10-text">2)</span>
+                  <span class="home-text085 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text086 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record12">
+                <div class="home-address-container12">
+                  <span class="home-text089 top10-text">3)</span>
+                  <span class="home-text090 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text091 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record13">
+                <div class="home-address-container13">
+                  <span class="home-text094 top10-text">4)</span>
+                  <span class="home-text095 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text096 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record14">
+                <div class="home-address-container14">
+                  <span class="home-text099 top10-text">5)</span>
+                  <span class="home-text100 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text101 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record15">
+                <div class="home-address-container15">
+                  <span class="home-text104 top10-text">6)</span>
+                  <span class="home-text105 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text106 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record16">
+                <div class="home-address-container16">
+                  <span class="home-text109 top10-text">7)</span>
+                  <span class="home-text110 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text111 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record17">
+                <div class="home-address-container17">
+                  <span class="home-text114 top10-text">8)</span>
+                  <span class="home-text115 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text116 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record18">
+                <div class="home-address-container18">
+                  <span class="home-text119 top10-text">9)</span>
+                  <span class="home-text120 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text121 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+              <div class="home-record19">
+                <div class="home-address-container19">
+                  <span class="home-text124 top10-text">10)</span>
+                  <span class="home-text125 top10-text">
+                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
+                  </span>
+                </div>
+                <span class="home-text126 top10-text">
+                  <span>10</span>
+                  <br />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="home-footer">
+          <div class="home-main">
+            <div class="home-branding">
+              <div class="home-heading">
+                <h2 class="home-logo">
+                  <span class="home-text129">Zk Chickens</span>
+                  <br />
+                </h2>
+                <p class="home-caption">
+                  This is a open-source web page for the lottery of the game.
+                  You can find the code in the GitHub repository.&nbsp;
+                </p>
+              </div>
+              <div class="home-socials">
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="home-twitter button social"
+                >
+                  <img
+                    alt="image"
+                    src="public/external/twitter.svg"
+                    class="home-image"
+                  />
+                </a>
+                <a
+                  href="https://discord.com"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="home-discord button social"
+                >
+                  <img
+                    alt="image"
+                    src="public/external/discord.svg"
+                    class="home-image1"
+                  />
+                </a>
+                <a
+                  href="https://github.com/Casual-Zk"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="home-discord1 button social"
+                >
+                  <img
+                    alt="image"
+                    src="public/github.svg"
+                    class="home-image2"
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="home-socials1">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="home-twitter1 button social"
+              >
+                <img
+                  alt="image"
+                  src="public/external/twitter.svg"
+                  class="home-image3"
+                />
+              </a>
+              <a
+                href="https://discord.com"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="home-discord2 button social"
+              >
+                <img
+                  alt="image"
+                  src="public/external/discord.svg"
+                  class="home-image4"
+                />
+              </a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
