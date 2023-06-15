@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+
 
     <style data-tag="reset-style-sheet">
       html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
@@ -46,7 +48,87 @@
     </style>
     <link rel="stylesheet" href="./style.css" />
   </head>
-  <body>
+  <body>    
+
+    <script>
+      const addresses = [
+        { address: 'Address 1', eggs: 5, tickets: 50 },
+        { address: 'Address 2', tickets: 3 },
+        { address: 'Address 3', tickets: 2 },
+        { address: 'Address 4', tickets: 2 },
+        { address: 'Address 5', tickets: 2 },
+        { address: 'Address 6', tickets: 2 },
+        { address: 'Address 7', tickets: 2 },
+        { address: 'Address 8', tickets: 2 },
+        { address: 'Address 9', tickets: 2 },
+        { address: 'Address 10', tickets: 2 },
+        { address: 'Address 11', tickets: 2 },
+        { address: 'Address 12', tickets: 2 },
+        { address: 'Address 13', tickets: 2 },
+        { address: 'Address 14', tickets: 2 },
+        { address: 'Address 15', tickets: 2 },
+        { address: 'Address 16', tickets: 2 },
+        { address: 'Address 17', tickets: 2 },
+        { address: 'Address 18', tickets: 2 },
+        { address: 'Address 19', tickets: 2 },
+        { address: 'Address 20', tickets: 2 },
+        { address: 'Address 21', tickets: 2 },
+        { address: 'Address 22', tickets: 2 },
+        { address: 'Address 23', tickets: 2 },
+        { address: 'Address 24', tickets: 2 },
+        { address: 'Address 25', tickets: 2 },
+        { address: 'Address 26', tickets: 2 },
+        { address: 'Address 27', tickets: 2 },
+        { address: 'Address 28', tickets: 2 },
+        { address: 'Address 29', tickets: 2 },
+        { address: 'Address 30', tickets: 2 },
+      ];
+
+      const pools = [
+        { name: 'Pool 1', size: 5, winners: [] },
+        { name: 'Pool 2', size: 10, winners: [] },
+        { name: 'Pool 3', size: 15, winners: [] },
+      ];
+
+      var seed = 25900;
+
+      function pickWinner(seed) {
+        Math.seedrandom(seed); // Seed the random number generator
+
+        // Calculate the total number of tickets
+        const totalTickets = addresses.reduce((sum, address) => sum + address.tickets, 0);
+
+        // Generate a random number within the range of total tickets
+        const randomNumber = Math.ceil(Math.random() * totalTickets);
+
+        let cumulativeTickets = 0;
+        for (const address of addresses) {
+          cumulativeTickets += address.tickets;
+
+          // If the random number is less than or equal to the cumulative tickets,
+          // select this address as the winner
+          if (randomNumber <= cumulativeTickets) {
+            //console.log("Got winner: " + address.address);
+            address.tickets = 0; // Remove all of the winner's tickets
+            return address;
+          }
+        }
+
+        return null; // No more tickets remaining
+      }
+
+      // Fill all the pools
+      for (let pool of pools){
+        while(pool.winners.length < pool.size){
+          pool.winners.push(pickWinner(seed));
+          seed++;
+        }
+      }
+
+      console.log(pools);
+    </script>
+
+
     <div>
       <link href="./home.css" rel="stylesheet" />
 
@@ -383,13 +465,9 @@
           <div class="home-main">
             <div class="home-branding">
               <div class="home-heading">
-                <h2 class="home-logo">
-                  <span class="home-text129">Zk Chickens</span>
-                  <br />
-                </h2>
                 <p class="home-caption">
                   This is a open-source web page for the lottery of the game.
-                  You can find the code in the GitHub repository.&nbsp;
+                  You can find the code in the GitHub repository.
                 </p>
               </div>
               <div class="home-socials">
