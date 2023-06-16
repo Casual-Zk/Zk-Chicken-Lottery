@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript" src="weeks.js"></script> 
 
 
     <style data-tag="reset-style-sheet">
@@ -50,88 +51,214 @@
   </head>
   <body>    
 
-    <script>
-      const addresses = [
-        { address: 'Address 1', eggs: 5, tickets: 50 },
-        { address: 'Address 2', tickets: 3 },
-        { address: 'Address 3', tickets: 2 },
-        { address: 'Address 4', tickets: 2 },
-        { address: 'Address 5', tickets: 2 },
-        { address: 'Address 6', tickets: 2 },
-        { address: 'Address 7', tickets: 2 },
-        { address: 'Address 8', tickets: 2 },
-        { address: 'Address 9', tickets: 2 },
-        { address: 'Address 10', tickets: 2 },
-        { address: 'Address 11', tickets: 2 },
-        { address: 'Address 12', tickets: 2 },
-        { address: 'Address 13', tickets: 2 },
-        { address: 'Address 14', tickets: 2 },
-        { address: 'Address 15', tickets: 2 },
-        { address: 'Address 16', tickets: 2 },
-        { address: 'Address 17', tickets: 2 },
-        { address: 'Address 18', tickets: 2 },
-        { address: 'Address 19', tickets: 2 },
-        { address: 'Address 20', tickets: 2 },
-        { address: 'Address 21', tickets: 2 },
-        { address: 'Address 22', tickets: 2 },
-        { address: 'Address 23', tickets: 2 },
-        { address: 'Address 24', tickets: 2 },
-        { address: 'Address 25', tickets: 2 },
-        { address: 'Address 26', tickets: 2 },
-        { address: 'Address 27', tickets: 2 },
-        { address: 'Address 28', tickets: 2 },
-        { address: 'Address 29', tickets: 2 },
-        { address: 'Address 30', tickets: 2 },
-      ];
+    <script>      
 
-      const pools = [
-        { name: 'Pool 1', size: 5, winners: [] },
-        { name: 'Pool 2', size: 10, winners: [] },
-        { name: 'Pool 3', size: 15, winners: [] },
-      ];
+      // Default week is the last week
+      var weekNumber = weeks.length
+      var week = weeks[weekNumber - 1];
+      var weekInput;
+      
+      var players = week.players;
+      var pools = week.pools;
+      var seed = week.seed;
 
-      var seed = 25900;
+      var totalPrize = 0;
+      var totalWinnerCount = 0;
+
+      function getWeek(){
+        weekNumber = weekInput.value;
+        //console.log("Value: " + weekNumber);
+        if (weekNumber > 0 && weekNumber <= weeks.length) {
+          //console.log("Setting week: " + weekNumber);
+          week = weeks[weekNumber - 1];
+          executeLottery();
+        }
+      }
 
       function pickWinner(seed) {
         Math.seedrandom(seed); // Seed the random number generator
 
         // Calculate the total number of tickets
-        const totalTickets = addresses.reduce((sum, address) => sum + address.tickets, 0);
+        const totalTickets = players.reduce((sum, player) => sum + player.tickets, 0);
+        //console.log("Total Tickets: " + totalTickets);
 
         // Generate a random number within the range of total tickets
         const randomNumber = Math.ceil(Math.random() * totalTickets);
+        //console.log("Random Number: " + randomNumber);
 
         let cumulativeTickets = 0;
-        for (const address of addresses) {
-          cumulativeTickets += address.tickets;
+        for (const player of players) {
+          cumulativeTickets += player.tickets;
 
           // If the random number is less than or equal to the cumulative tickets,
-          // select this address as the winner
+          // select this player as the winner
           if (randomNumber <= cumulativeTickets) {
-            //console.log("Got winner: " + address.address);
-            address.tickets = 0; // Remove all of the winner's tickets
-            return address;
+            //console.log("Got winner: " + player.address);
+            player.tickets = 0; // Remove all of the winner's tickets
+            return player;
           }
         }
 
         return null; // No more tickets remaining
       }
 
-      // Fill all the pools
-      for (let pool of pools){
-        while(pool.winners.length < pool.size){
-          pool.winners.push(pickWinner(seed));
-          seed++;
+      function executeLottery(){
+        players = week.players;
+        pools = week.pools;
+        seed = week.seed;
+
+        totalPrize = 0;
+        totalWinnerCount = 0;
+
+        // Execute lottery and fill all the pools
+        for (let pool of pools){
+          while(pool.winners.length < pool.size){
+            pool.winners.push(pickWinner(seed));
+            seed++;
+          }
         }
+
+        console.log(pools);
+
+        week.pools.forEach(pool => {
+          totalPrize += pool.prize;
+          totalWinnerCount += pool.winners.length;
+        });
+
+        console.log("Total Prize: " + totalPrize);
+        console.log("Total Winners: " + totalWinnerCount);
+
+        displayResult();
       }
 
-      console.log(pools);
+      function displayResult(){
+        // Display the seed of the week
+        document.getElementById('seedSpan').textContent = 
+        `Week: ${weekNumber} - Seed: ${seed}`;
+
+        document.getElementById('weekInformationText').textContent = 
+        `This week we have total of ${totalWinnerCount} winners that will share total of ${totalPrize} tokens!`;
+
+        var top10List = document.querySelector('.home-list-container');
+        var mainPoolsDiv = document.querySelector('.home-pools');
+
+        // Clean the current values
+        top10List.innerHTML = ``;
+        mainPoolsDiv.innerHTML = ``;
+
+        // Create top10
+        for (let i = 0; i < 10; i++) {
+          // Create the home-record10 div
+          const recordDiv = document.createElement('div');
+          recordDiv.classList.add('home-record');
+
+          // Create the home-address-container div
+          const addressContainerDiv = document.createElement('div');
+          addressContainerDiv.classList.add('home-address-container');
+
+          // Create the span elements for the address and eggs
+          const addressSpan = document.createElement('span');
+          addressSpan.classList.add('home-text01', 'top10-text');
+          addressSpan.textContent = `${i + 1}) `+ players[i].address;
+
+          const eggsSpan = document.createElement('span');
+          eggsSpan.classList.add('home-text01', 'top10-text');
+          eggsSpan.innerHTML = `<span>${players[i].eggs}</span><br />`;
+
+          // Add the elements to their respective parents
+          addressContainerDiv.appendChild(addressSpan);
+          recordDiv.appendChild(addressContainerDiv);
+          recordDiv.appendChild(eggsSpan);
+
+          // Append the recordDiv to the listContainer
+          top10List.appendChild(recordDiv);
+        }
+
+        // Create pools
+        pools.forEach((pool, i) => {
+          
+          ////// FIRST, create the pool container as a whole
+
+          // Create Pool Div
+          const poolDiv = document.createElement('div');
+          poolDiv.classList.add('home-pool-1');
+
+          // Create pool-information text span
+          const poolInfoSpan = document.createElement('span');
+          poolInfoSpan.classList.add('home-text072');
+          poolInfoSpan.textContent = 
+          `Pool ${i+1} - Total of ${pool.size} winner will share ${pool.prize} tokens in this pool.`;
+
+          // Create pool-list div
+          const poolListDiv = document.createElement('div');
+          poolListDiv.classList.add('home-list-container1');
+
+          // Create list title div and span
+          const poolListTitleDiv = document.createElement('div');
+          poolListTitleDiv.classList.add('home-title2');
+
+          const titleAddressSpan = document.createElement('span');
+          titleAddressSpan.classList.add('home-text01', 'top10-text');
+          titleAddressSpan.innerHTML = `<span>Address</span><br />`;
+
+          const titleEggSpan = document.createElement('span');
+          titleEggSpan.classList.add('home-text01', 'top10-text');
+          titleEggSpan.innerHTML = `<span>Eggs</span><br />`;
+
+          poolListTitleDiv.appendChild(titleAddressSpan);
+          poolListTitleDiv.appendChild(titleEggSpan);    
+          poolListDiv.appendChild(poolListTitleDiv);  
+          poolDiv.appendChild(poolInfoSpan);
+          poolDiv.appendChild(poolListDiv);
+
+          ////// THEN, fill its list with winners
+          pool.winners.forEach((winner, index) => {
+            // Create the home-record10 div
+            const recordDiv = document.createElement('div');
+            recordDiv.classList.add('home-record');
+
+            // Create the home-address-container10 div
+            const addressContainerDiv = document.createElement('div');
+            addressContainerDiv.classList.add('home-address-container');
+
+            // Create the span elements for the address and eggs
+            const addressSpan = document.createElement('span');
+            addressSpan.classList.add('home-text01', 'top10-text');
+            addressSpan.textContent = `${index + 1}) ${winner.address}`;
+
+            const eggsSpan = document.createElement('span');
+            eggsSpan.classList.add('home-text01', 'top10-text');
+            eggsSpan.innerHTML = `<span>${winner.eggs}</span><br />`;
+
+            // Add the elements to their respective parents
+            addressContainerDiv.appendChild(addressSpan);
+            recordDiv.appendChild(addressContainerDiv);
+            recordDiv.appendChild(eggsSpan);
+
+            // Append the recordDiv to the listContainer
+            poolListDiv.appendChild(recordDiv);
+          });
+
+          ////// LASTLY, add this pool to the pools container
+          mainPoolsDiv.appendChild(poolDiv);
+        });
+      
+      }
+
+      // Wait for the DOM content to load
+      document.addEventListener('DOMContentLoaded', () => {
+
+        weekInput = document.getElementById('weekNumInput');
+        weekInput.value = weeks.length;
+
+        executeLottery();
+      });
+      
     </script>
 
 
     <div>
       <link href="./home.css" rel="stylesheet" />
-
       <div class="home-container">
         <div class="home-title">
           <h1 class="home-text">Zk Chickens Lottery</h1>
@@ -151,7 +278,8 @@
               placeholder="Week Number"
               class="home-textinput input"
             />
-            <button type="button" class="home-button button">
+            <button type="button" class="home-button button"
+              onclick = "getWeek()">
               <span class="home-text004">
                 <span>Get Result</span>
                 <br />
@@ -159,13 +287,17 @@
             </button>
           </div>
           <div class="home-seed-container">
-            <span class="home-text007 top10-text">Seed was: 25000</span>
+            <span class="home-text007 top10-text" id="seedSpan"></span>
             <span class="home-text008 top10-text">
               <span>
                 (Note: Seed is the Bitcoin's closing price at the end of the
                 week (sunday). Reference chart is Bitstamp's daily chart with
                 candles)
               </span>
+              <br />
+              <br />
+              <br />
+              <span id = "weekInformationText"></span>
               <br />
             </span>
           </div>
@@ -182,284 +314,10 @@
                   <br />
                 </span>
               </div>
-              <div class="home-record">
-                <div class="home-address-container">
-                  <span class="home-text018 top10-text">1)</span>
-                  <span class="home-text019 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text020 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record01">
-                <div class="home-address-container01">
-                  <span class="home-text023 top10-text">2)</span>
-                  <span class="home-text024 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text025 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record02">
-                <div class="home-address-container02">
-                  <span class="home-text028 top10-text">3)</span>
-                  <span class="home-text029 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text030 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record03">
-                <div class="home-address-container03">
-                  <span class="home-text033 top10-text">4)</span>
-                  <span class="home-text034 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text035 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record04">
-                <div class="home-address-container04">
-                  <span class="home-text038 top10-text">5)</span>
-                  <span class="home-text039 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text040 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record05">
-                <div class="home-address-container05">
-                  <span class="home-text043 top10-text">6)</span>
-                  <span class="home-text044 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text045 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record06">
-                <div class="home-address-container06">
-                  <span class="home-text048 top10-text">7)</span>
-                  <span class="home-text049 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text050 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record07">
-                <div class="home-address-container07">
-                  <span class="home-text053 top10-text">8)</span>
-                  <span class="home-text054 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text055 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record08">
-                <div class="home-address-container08">
-                  <span class="home-text058 top10-text">9)</span>
-                  <span class="home-text059 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text060 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record09">
-                <div class="home-address-container09">
-                  <span class="home-text063 top10-text">10)</span>
-                  <span class="home-text064 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text065 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
             </div>
           </div>
         </div>
         <div class="home-pools">
-          <div class="home-profile-button-container">
-            <div class="home-active-profile-button">
-              <span class="home-active-profile-text">Pool 1</span>
-            </div>
-            <div class="home-passive-profile-button">
-              <span class="home-passive-profile-text">
-                <span>Pool 2</span>
-                <br />
-              </span>
-            </div>
-            <div class="home-passive-profile-button1">
-              <span class="home-passive-profile-text1">
-                <span>Pool 3</span>
-                <br />
-              </span>
-            </div>
-          </div>
-          <div class="home-pool-1">
-            <span class="home-text072">
-              10 winners will share X token in this pool this week.
-            </span>
-            <div class="home-list-container1">
-              <div class="home-title2">
-                <span class="home-text073 top10-text">
-                  <span>Address</span>
-                  <br />
-                </span>
-                <span class="home-text076 top10-text">
-                  <span>Eggs</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record10">
-                <div class="home-address-container10">
-                  <span class="home-text079 top10-text">1)</span>
-                  <span class="home-text080 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text081 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record11">
-                <div class="home-address-container11">
-                  <span class="home-text084 top10-text">2)</span>
-                  <span class="home-text085 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text086 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record12">
-                <div class="home-address-container12">
-                  <span class="home-text089 top10-text">3)</span>
-                  <span class="home-text090 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text091 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record13">
-                <div class="home-address-container13">
-                  <span class="home-text094 top10-text">4)</span>
-                  <span class="home-text095 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text096 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record14">
-                <div class="home-address-container14">
-                  <span class="home-text099 top10-text">5)</span>
-                  <span class="home-text100 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text101 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record15">
-                <div class="home-address-container15">
-                  <span class="home-text104 top10-text">6)</span>
-                  <span class="home-text105 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text106 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record16">
-                <div class="home-address-container16">
-                  <span class="home-text109 top10-text">7)</span>
-                  <span class="home-text110 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text111 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record17">
-                <div class="home-address-container17">
-                  <span class="home-text114 top10-text">8)</span>
-                  <span class="home-text115 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text116 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record18">
-                <div class="home-address-container18">
-                  <span class="home-text119 top10-text">9)</span>
-                  <span class="home-text120 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text121 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-              <div class="home-record19">
-                <div class="home-address-container19">
-                  <span class="home-text124 top10-text">10)</span>
-                  <span class="home-text125 top10-text">
-                    0x85be25d0Ef53959dB27D42df1f7da57549154D5f
-                  </span>
-                </div>
-                <span class="home-text126 top10-text">
-                  <span>10</span>
-                  <br />
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
         <footer class="home-footer">
           <div class="home-main">

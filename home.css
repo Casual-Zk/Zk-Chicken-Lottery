@@ -519,8 +519,12 @@
   max-width: auto;
   align-items: flex-start;
   padding-top: var(--dl-space-space-unit);
+  padding-bottom: var(--dl-space-space-unit);
+  margin-top: var(--dl-space-space-unit);
+  margin-bottom: var(--dl-space-space-unit);
   border-radius: 0px;
   background-color: rgba(0, 0, 0, 0.2);
+  border-top-left-radius: var(--dl-radius-radius-radius8);
   border-top-right-radius: var(--dl-radius-radius-radius8);
   border-bottom-left-radius: var(--dl-radius-radius-radius8);
   border-bottom-right-radius: var(--dl-radius-radius-radius8);
